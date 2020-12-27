@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#skript mis lisab uue kasutaja või kasutajad talle etteantud failist#
+
+
+if [ $# -ne 1 ]; then
+	echo "Vale sisend! Kasutusjuhend: $0 "kasutajanimi""
+	exit
+fi
+
+failinimi=$1
+
+if [ -f $failinimi -a -r $failinimi ]; then
+	 echo "Fail on korras!"
+
+ 	 for nimi in $(cat $failinimi); do
+	   echo $nimi
+           sh ./lisa_kasutaja $nimi 
+         done
+else
+   	 echo "probleem failiga $failinimi"
+fi
+
