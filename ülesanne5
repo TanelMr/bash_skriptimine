@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#Skript mis lisab süsteemi kasutajad, lugedes kasutajanimed etteantud failist				 #
+#ja genereerib igale kasutajale parooli. Lisaks salvestab kasutajad ja genereeritud paroolid eraldi faili#
+
+if [ $# -ne 1 ]; then
+	echo "Vale sisend! Kasutusjuhend: $0 #fail_kasutajatega#"
+	exit
+fi
+
+kasutajad=$1
+
+if [ -f $kasutajad -a -r $kasutajad ]; then
+	echo "Fail $kasutajad on korras!"
+
+        for  kasutaja in $(cat $kasutajad); do 
+        parool=$(pwgen -1 -s 8)
+        kasutajanimi=$(echo "$kasutaja")
+	useradd $kasutaja -m -s /bin/bash
+	echo "$kasutajanimi:$parool" | chpasswd
+	echo "$kasutajanimi:$parool" >> paroolid.txt
+        echo "Kasutaja $kasutaja sai loodud parooliga $parool"
+	done
+
+	echo "Kasutajad ja paroolid on leitavad failis paroolid.txt"
+
+	else
+        echo "Viga faili $kasutajad lugemisel!"
+fi
