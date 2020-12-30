@@ -4,7 +4,7 @@
 #parooliga								 #
 
 if [ $# -ne 1 ]; then
-	echo "Vale sisend! Kasutusjuhend: $0 "kasutajanimi""
+	echo "Vale sisend! Kasutusjuhend: $0 #failinimi#"
 	exit
 fi
 
@@ -19,6 +19,6 @@ if [ -f $failinimi -a -r $failinimi ]; then
 	   echo "$nimi" | chpasswd 
  	 done
 else
-   	 echo "probleem failiga $failinimi"
+   	 echo "Probleem failiga $failinimi!"
 fi
 
