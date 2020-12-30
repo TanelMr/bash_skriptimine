@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#Skript mis lisab süsteemi kasutajad, kasutades ühte faili kasutajanime#
+#saamiseks ja teist faili kasutaja parooli saamiseks		       #
+
+if [ $# -ne 2 ]; then
+	echo "Vale sisend! Kasutusjuhend: $0 #fail_kasutajatega# #fail_paroolidega#"
+	exit
+fi
+
+kasutajad=$1
+paroolid=$2
+paste -d":" $kasutajad $paroolid > temp.txt
+
+if [ -f $kasutajad -a -r $kasutajad ] && [ -f $paroolid -a -r $paroolid ]; then
+	echo "Failid $kasutajad ja $paroolid on korras!"
+
+        for  kasutaja in $(cat $kasutajad); do 
+        useradd $kasutaja -m -s /bin/bash
+        echo "Kasutaja $kasutaja sai loodud" 
+        done
+
+        for parool in $(cat temp.txt); do
+        echo $parool | chpasswd
+        kasutajanimi=$(echo $parool | cut -f1 -d":")
+        echo "Kasutajale $kasutajanimi on parool määratud!"
+        done
+       
+        rm temp.txt
+       
+        else
+
+        echo "Viga failide lugemisel!"
+fi
